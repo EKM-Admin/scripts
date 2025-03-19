@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "func_Get-Emoji.ps1"  # Watch this file, you can add more later :)
+      - "README.md" # prefer this for testing ;-)
 
 jobs:
   notify:
