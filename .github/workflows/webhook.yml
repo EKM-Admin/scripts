@@ -25,7 +25,8 @@ jobs:
           CHANGED_JSON=$(echo "$FILES" | jq -R -s -c 'split("\n")[:-1]')
           echo "changed_files=$CHANGED_JSON" >> $GITHUB_ENV
 
-      - name: Send Webhook with JSON Payload
+      - name: Conditionally Send Webhook with JSON Payload
+        if: ${{ secrets.WEBHOOK_ENABLED == 'true' }}
         run: |
           curl -X POST https://webhook.site/aa362e00-e471-4188-8ba5-e1cb93dd3a9e \
           -H "Content-Type: application/json" \
