@@ -4,7 +4,7 @@
 # in addition, you can use the emojis that are already defined in the script
 
 function Get-Emoji {
-    param ([string]$hex) # the only parameter the function needs is the hex value of the desired emoji
+    param ([string]$hex) # the only parameter the function needs is the hex value (= as string) of the desired emoji
     [System.Char]::ConvertFromUtf32([System.Convert]::ToInt32($hex, 16))
 }
 
