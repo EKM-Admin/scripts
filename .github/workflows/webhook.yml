@@ -15,8 +15,12 @@ jobs:
       - name: Get Changed Files as JSON Array
         id: changed_files
         run: |
-          FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | jq -R -s -c 'split("\n")[:-1]')
-          echo "changed_files=$FILES" >> $GITHUB_ENV
+          # Get the list of files changed in the current commit
+          FILES=$(git diff --name-only ${{ github.sha }}^..${{ github.sha }})
+
+          # Convert the file list to a JSON array using jq
+          CHANGED_JSON=$(echo "$FILES" | jq -R -s -c 'split("\n")[:-1]')
+          echo "changed_files=$CHANGED_JSON" >> $GITHUB_ENV
 
       - name: Send Webhook with JSON Payload
         run: |
@@ -28,5 +32,3 @@ jobs:
             "commit": "${{ github.sha }}",
             "changed_files": ${{ env.changed_files }}
           }'
-
-
