@@ -26,7 +26,7 @@ jobs:
           echo "changed_files=$CHANGED_JSON" >> $GITHUB_ENV
 
       - name: Conditionally Send Webhook with JSON Payload
-        if: env.WEBHOOK_ENABLED == 'true'
+        if: var.WEBHOOK_ENABLED == 'true'
         run: |
           curl -X POST https://webhook.site/aa362e00-e471-4188-8ba5-e1cb93dd3a9e \
           -H "Content-Type: application/json" \
