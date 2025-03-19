@@ -30,7 +30,7 @@ jobs:
         run: |
           curl -X POST https://webhook.site/aa362e00-e471-4188-8ba5-e1cb93dd3a9e \
           -H "Content-Type: application/json" \
-          -H "Authorization: Bearer ${{ secrets.WEBHOOK_SECRET }}" \
+          -H "Authorization: ${{ secrets.WEBHOOK_SECRET }}" \
           -d '{
             "repository": "${{ github.repository }}",
             "commit": "${{ github.sha }}",
