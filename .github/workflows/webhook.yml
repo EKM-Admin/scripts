@@ -34,5 +34,6 @@ jobs:
           -d '{
             "repository": "${{ github.repository }}",
             "commit": "${{ github.sha }}",
+            "commit_message": "${{ github.event.head_commit.message }}",
             "changed_files": ${{ env.changed_files }}
           }'
