@@ -1,4 +1,4 @@
 # scripts
 loose collection of scripts (mostly functions)
 
-I hope this change to the file will trigger the test webhook
+It's mostly powershell
