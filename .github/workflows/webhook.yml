@@ -12,12 +12,14 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4  # Needed to get file changes
+        with:
+          fetch-depth: 2  # Fetch the last two commits to avoid issues with the history
 
       - name: Get Changed Files as JSON Array
         id: changed_files
         run: |
-          # Get the list of files changed in the current commit
-          FILES=$(git diff --name-only ${{ github.sha }}^..${{ github.sha }})
+          # Get the list of files changed in the current commit compared to the previous one
+          FILES=$(git diff --name-only HEAD~1..HEAD)
 
           # Convert the file list to a JSON array using jq
           CHANGED_JSON=$(echo "$FILES" | jq -R -s -c 'split("\n")[:-1]')
