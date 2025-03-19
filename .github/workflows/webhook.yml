@@ -1,18 +1,32 @@
 name: Notify Webhook on Any Script File Change
 
 on:
-  push:  # Triggers on any commit pushed to the repo
-    paths: 
-      - "func_Get-Emoji.ps1"
+  push:
+    paths:
+      - "func_Get-Emoji.ps1"  # Watch this file, you can add more later :)
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Webhook
+      - name: Checkout Repo
+        uses: actions/checkout@v4  # Needed to get file changes
+
+      - name: Get Changed Files as JSON Array
+        id: changed_files
+        run: |
+          FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | jq -R -s -c 'split("\n")[:-1]')
+          echo "changed_files=$FILES" >> $GITHUB_ENV
+
+      - name: Send Webhook with JSON Payload
         run: |
           curl -X POST https://webhook.site/aa362e00-e471-4188-8ba5-e1cb93dd3a9e \
           -H "Content-Type: application/json" \
-          -H "Authorization: Bearer ${{ secrets.MY_WEBHOOK_TOKEN }}" \
-          -d '{"repository": "${{ github.repository }}", "commit": "${{ github.sha }}"}'
+          -H "Authorization: Bearer ${{ secrets.WEBHOOK_SECRET }}" \
+          -d '{
+            "repository": "${{ github.repository }}",
+            "commit": "${{ github.sha }}",
+            "changed_files": ${{ env.changed_files }}
+          }'
+
 
